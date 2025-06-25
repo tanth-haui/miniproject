@@ -41,15 +41,13 @@ class MainWindow(QMainWindow):
         if not Path(input_path).is_dir():
             QMessageBox.critical(self, "Lỗi", "❌ Thư mục Input không tồn tại.")
             return
-
-        # ✅ KHÔNG kiểm tra thư mục output — để cho phép tạo tự động
-        print(f"[DEBUG] Output folder được nhập: {output_path}")  # Debug nhẹ nếu cần
-
         try:
             run_processing(input_path, output_path, signal, start_time, end_time)
             QMessageBox.information(self, "Thành công", "✅ Xử lý hoàn tất!")
-        except Exception as e:
-            QMessageBox.critical(self, "Lỗi xử lý", f"❌ Đã xảy ra lỗi:\n{str(e)}")
+        except Exception as error:
+            QMessageBox.critical(self, "⚠ Warning", f"❌ Error:\n{str(error)}")
+        finally:
+            self.ui.Start_button.setEnabled(True)        
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
